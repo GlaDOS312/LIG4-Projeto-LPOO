@@ -1,4 +1,4 @@
-package main;
+package lig4;
 public class Lig4 {
     private char[][] tabuleiro;
     private int jogadorAtual;
