@@ -6,7 +6,6 @@ public class Lig4Turbo extends Lig4 {
         super(); // Chama o construtor da classe pai (Lig4) para inicializar o tabuleiro e jogadores
     }
 
-    @Override
     protected void turboMode(int linha, int col) {
         char jogador = jogadores[jogadorAtual];
         for (int i = col + 1; i < colunas; i++) {
@@ -40,4 +39,9 @@ public class Lig4Turbo extends Lig4 {
     }
 
     // Métodos específicos do modo Turbo (se houver)
+
+    @Override
+    public void jogar() {
+        super.jogar(); // Chama o método jogar da classe pai
+    }
 }
