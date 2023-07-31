@@ -1,5 +1,4 @@
 package modos;
-package lig4.tabuleiro;
 
 import Lig4.tabuleiro;
 import java.util.Arrays;
