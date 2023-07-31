@@ -11,6 +11,26 @@ public class Lig4 {
     private final int linhas = 6;
     private final int colunas = 7;
 
+    protected class Lig4Turbo {
+        public Lig4Turbo(){}
+
+        protected void turboMode(int linha, int col) {
+            char jogador = jogadores[jogadorAtual];
+            for (int i = col + 1; i < colunas; i++) {
+                if (tabuleiro[linha][i] != jogador) {
+                    break;
+                }
+                tabuleiro[linha][i] = jogador;
+            }
+
+            for (int i = col - 1; i >= 0; i--) {
+                if (tabuleiro[linha][i] != jogador) {
+                    break;
+                }
+                tabuleiro[linha][i] = jogador;
+            }
+        }
+    }
     public Lig4() {
         tabuleiro = new char[linhas][colunas];
         for (char[] linha : tabuleiro) {
@@ -95,7 +115,6 @@ public class Lig4 {
                     fimDeJogo = true;
                 }
             } else {
-                // Jogada do Computador
                 col = random.nextInt(colunas);
                 while (!movimentoValido(col)) {
                     col = random.nextInt(colunas);
@@ -134,21 +153,21 @@ public class Lig4 {
         return tabuleiro[0][col] == ' ';
     }
 
-    private int soltarPeca(int col) {
+    protected int soltarPeca(int col) {
         int linha;
         for (linha = linhas - 1; linha >= 0; linha--) {
             if (tabuleiro[linha][col] == ' ') {
                 tabuleiro[linha][col] = jogadores[jogadorAtual];
+                turboMode(linha, col); // Chama o método turboMode da própria classe Lig4 para mudar as peças vizinhas
                 break;
             }
         }
         return linha;
     }
+    
 
     private boolean checarVitoria(int linha, int col) {
         char jogador = jogadores[jogadorAtual];
-
-        // Verificação na horizontal
         int contar = 0;
         for (int i = Math.max(0, col - 3); i <= Math.min(colunas - 1, col + 3); i++) {
             if (tabuleiro[linha][i] == jogador) {
@@ -159,7 +178,6 @@ public class Lig4 {
             }
         }
 
-        // Verificação na vertical
         contar = 0;
         for (int i = Math.max(0, linha - 3); i <= Math.min(linhas - 1, linha + 3); i++) {
             if (tabuleiro[i][col] == jogador) {
@@ -170,7 +188,6 @@ public class Lig4 {
             }
         }
 
-        // Verificação na diagonal principal (de cima para baixo e da esquerda para a direita)
         contar = 0;
         int offset = Math.min(col, linha);
         int startCol = col - offset;
@@ -184,7 +201,6 @@ public class Lig4 {
             }
         }
 
-        // Verificação na diagonal secundária (de cima para baixo e da direita para a esquerda)
         contar = 0;
         offset = Math.min(colunas - col - 1, linha);
         startCol = col + offset;
