@@ -1,25 +1,22 @@
-package lig4.tabuleiro;
+package Lig4Pasta.Lig4Game.src;
 
 import java.util.Arrays;
 import java.util.Random;
 import java.util.Scanner;
-import lig4.tabuleiro.Lig4TurboMode;
 
-public class Lig4TurboMaluco {
+class Lig4Turbo {
     protected char[][] tabuleiro;
     protected int jogadorAtual;
     protected final char[] jogadores = {'X', 'O'};
     protected final int linhas = 6;
     protected final int colunas = 7;
-    protected int nivelMaluquice;
 
-    public Lig4TurboMaluco() {
+    public Lig4Turbo() {
         tabuleiro = new char[linhas][colunas];
         for (char[] linha : tabuleiro) {
             Arrays.fill(linha, ' ');
         }
         jogadorAtual = 0;
-        nivelMaluquice = 5;
     }
 
     public void play() {
@@ -27,7 +24,7 @@ public class Lig4TurboMaluco {
         boolean fimDeJogo = false;
         int linha, col;
 
-        System.out.println("Bem-vindo ao Lig 4 Turbo Maluco!");
+        System.out.println("Bem-vindo ao Lig 4 Turbo!");
 
         while (!fimDeJogo) {
             printTabuleiro();
@@ -38,8 +35,7 @@ public class Lig4TurboMaluco {
             } while (!movimentoValido(col));
 
             linha = soltarPeca(col);
-            malucoMode(linha, col);
-            turboMalucoMode(linha, col);
+            turboMode(linha, col);
             if (checarVitoria(linha, col)) {
                 printTabuleiro();
                 System.out.printf("Jogador %c venceu! Parabéns!\n", jogadores[jogadorAtual]);
@@ -105,7 +101,7 @@ public class Lig4TurboMaluco {
         return true;
     }
 
-    protected void malucoMode(int linha, int col) {
+    protected void turboMode(int linha, int col) {
         char jogador = jogadores[jogadorAtual];
         for (int i = col + 1; i <= Math.min(col + 3, colunas - 1); i++) {
             if (tabuleiro[linha][i] != jogador) {
@@ -121,25 +117,5 @@ public class Lig4TurboMaluco {
             tabuleiro[linha][i] = jogador;
         }
     }
-
-    protected void turboMalucoMode(int linha, int col) {
-        char jogador = jogadores[jogadorAtual];
-        Random random = new Random();
-
-        for (int i = linha - 1; i <= linha + 1; i++) {
-            for (int j = col - 1; j <= col + 1; j++) {
-                if (i >= 0 && i < linhas && j >= 0 && j < colunas && tabuleiro[i][j] != jogador) {
-                    int chanceMudanca = random.nextInt(10);
-                    if (chanceMudanca < nivelMaluquice) {
-                        tabuleiro[i][j] = jogador;
-                    }
-                }
-            }
-        }
-    }
-
-    public void setNivelMaluquice(int nivelMaluquice) {
-        this.nivelMaluquice = nivelMaluquice;
-    }
-
 }
+
