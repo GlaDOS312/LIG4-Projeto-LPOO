@@ -1,7 +1,7 @@
 package Lig4Pasta.Lig4Game.src;
 
 import java.util.Arrays;
-import java.util.Random;
+
 import java.util.Scanner;
 
 class Lig4Turbo {
