@@ -4,12 +4,12 @@ import java.util.Random;
 import java.util.Scanner;
 
 public class Lig4 {
-    private char[][] tabuleiro;
-    private int jogadorAtual;
-    private final char[] jogadores = {'X', 'O'};
-    private final int linhas = 6;
-    private final int colunas = 7;
-    private Lig4Turbo turbo; // Instância da classe Lig4Turbo
+    protected char[][] tabuleiro;
+    protected int jogadorAtual;
+    protected final char[] jogadores = {'X', 'O'};
+    protected final int linhas = 6;
+    protected final int colunas = 7;
+    protected Lig4Turbo turbo;
 
     public Lig4() {
         tabuleiro = new char[linhas][colunas];
@@ -17,7 +17,6 @@ public class Lig4 {
             Arrays.fill(linha, ' ');
         }
         jogadorAtual = 0;
-        turbo = new Lig4Turbo(); // Inicializa a instância da classe Lig4Turbo
     }
 
     public void jogar() {
@@ -35,7 +34,6 @@ public class Lig4 {
                     System.out.printf("Jogador %c, escolha uma coluna (1 a 7): ", jogadores[jogadorAtual]);
                     col = scanner.nextInt() - 1;
                 } else {
-                    // Modo contra a máquina - escolhe uma coluna aleatória
                     Random random = new Random();
                     col = random.nextInt(colunas);
                 }
@@ -78,8 +76,6 @@ public class Lig4 {
         for (linha = linhas - 1; linha >= 0; linha--) {
             if (tabuleiro[linha][col] == ' ') {
                 tabuleiro[linha][col] = jogadores[jogadorAtual];
-
-                // Chama o método turboMode através da instância da classe Lig4Turbo
                 turbo.turboMode(linha, col);
 
                 break;
@@ -89,9 +85,6 @@ public class Lig4 {
     }
 
     protected boolean checarVitoria(int linha, int col) {   
-
-        // Lógica para verificar a vitória (igual ao código original)
-        // ...
 
         return false;
     }
@@ -103,34 +96,6 @@ public class Lig4 {
             }
         }
         return true;
-    }
-
-    // Classe Lig4Turbo
-    protected class Lig4Turbo {
-        // Construtor da classe Lig4Turbo
-        public Lig4Turbo() {
-            // Você pode adicionar um construtor para a classe Lig4Turbo se necessário
-        }
-
-        // Método turboMode
-        protected void turboMode(int linha, int col) {
-            char jogador = jogadores[jogadorAtual];
-
-            // Modo Turbo - Altera as peças vizinhas na horizontal
-            for (int i = col + 1; i < colunas; i++) {
-                if (tabuleiro[linha][i] != jogador) {
-                    break;
-                }
-                tabuleiro[linha][i] = jogador;
-            }
-
-            for (int i = col - 1; i >= 0; i--) {
-                if (tabuleiro[linha][i] != jogador) {
-                    break;
-                }
-                tabuleiro[linha][i] = jogador;
-            }
-        }
     }
 
     public static void main(String[] args) {
@@ -161,7 +126,8 @@ public class Lig4 {
                     break;
                 case 3:
                     System.out.println("Modo: Lig4Turbo");
-                    jogo.jogar();
+                    Lig4Turbo modoTurbo = new Lig4Turbo(); // Crie uma instância da subclasse Lig4Turbo
+                    modoTurbo.jogar(); // Chame o método jogar() do modo Lig4Turbo
                     break;
                 case 0:
                     System.out.println("Saindo do jogo. Até a próxima!");
