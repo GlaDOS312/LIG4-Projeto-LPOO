@@ -1,5 +1,5 @@
-package Lig4.modos;
-import tabuleiro.Lig4;
+package tabuleiro;
+import Lig4.tabuleiro;
 import java.util.Arrays;
 import java.util.Scanner;
 
@@ -121,13 +121,13 @@ class novoModo {
     }
 }
 
-public class Lig4TurboMode extends Lig4 {
-    public Lig4TurboMode() {
+public class Lig4Turbo extends Lig4 {
+    public Lig4Turbo() {
         super();
     }
 
     public static void main(String[] args) {
-        Lig4TurboMode jogo = new Lig4TurboMode();
+        Lig4Turbo jogo = new Lig4Turbo();
         jogo.play();
     }
 }

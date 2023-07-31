@@ -1,5 +1,7 @@
-package tabuleiro;
+package Lig4;
+import modos;
 import Lig4.tabuleiro.Lig4TurboMode;
+import Lig4.modos.Lig4TurboMaluco;
 import java.util.Arrays;
 import java.util.Scanner;
 
