@@ -4,20 +4,35 @@ import java.util.Random;
 
 public class Lig4TurboMaluco extends Lig4 {
 
+    private static final int NIVEL_MALUQUICE_MAXIMO = 5;
+
     private int nivelMaluquice;
 
     public Lig4TurboMaluco(int nivelMaluquice) {
-        super();
+        setNivelMaluquice(nivelMaluquice);
+    }
+
+    public void setNivelMaluquice(int nivelMaluquice) {
+        if (nivelMaluquice < 0 || nivelMaluquice > NIVEL_MALUQUICE_MAXIMO) {
+            throw new ValorAtributoInvalido("Nível de maluquice inválido. O nível deve estar entre 0 e " + NIVEL_MALUQUICE_MAXIMO);
+        }
         this.nivelMaluquice = nivelMaluquice;
     }
 
-    protected void turboMode(int linha, int col) {
+    public boolean movimentoValido(int col) {
+        if (col < 0 || col >= colunas) {
+            throw new MovimentoInvalido("Movimento inválido. Escolha uma coluna entre 1 e 7.");
+        }
+        return tabuleiro[0][col] == ' ';
+    }
+    
+    @Override
+    public void turboMode(int linha, int col) {
         super.turboMode(linha, col);
 
         char jogador = jogadores[jogadorAtual];
         Random random = new Random();
-
-        if (random.nextInt(100) < nivelMaluquice) {
+        if (random.nextInt(5) < nivelMaluquice) {
             int cima = linha - 1;
             int baixo = linha + 1;
 
@@ -30,7 +45,7 @@ public class Lig4TurboMaluco extends Lig4 {
             }
         }
 
-        if (random.nextInt(5) < nivelMaluquice) {
+        if (random.nextInt(100) < nivelMaluquice) {
             int esqCima = linha - 1;
             int dirCima = linha - 1;
             int esqBaixo = linha + 1;

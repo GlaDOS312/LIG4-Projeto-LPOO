@@ -6,7 +6,7 @@ public abstract class Lig4Turbo extends Lig4 {
         super();
     }
 
-    protected void turboMode(int linha, int col) {
+    public void turboMode(int linha, int col) {
         char jogador = jogadores[jogadorAtual];
         for (int i = col + 1; i < colunas; i++) {
             if (tabuleiro[linha][i] != jogador) {

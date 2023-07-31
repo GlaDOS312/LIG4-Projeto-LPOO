@@ -4,12 +4,12 @@ import java.util.Arrays;
 import java.util.Random;
 import java.util.Scanner;
 
-public class Lig4 {
-    protected char[][] tabuleiro;
-    protected int jogadorAtual;
-    protected final char[] jogadores = {'X', 'O'};
-    protected final int linhas = 6;
-    protected final int colunas = 7;
+public class Lig4 implements Lig4Interface {
+    public char[][] tabuleiro;
+    public int jogadorAtual;
+    public final char[] jogadores = {'X', 'O'};
+    public final int linhas = 6;
+    public final int colunas = 7;
 
     public Lig4() {
         tabuleiro = new char[linhas][colunas];
@@ -56,7 +56,7 @@ public class Lig4 {
         scanner.close();
     }
 
-    protected void printTabuleiro() {
+    public void printTabuleiro() {
         System.out.println(" 1 2 3 4 5 6 7");
         for (int i = 0; i < linhas; i++) {
             System.out.print("|");
@@ -67,11 +67,11 @@ public class Lig4 {
         }
     }
 
-    protected boolean movimentoValido(int col) {
+    public boolean movimentoValido(int col) {
         return col >= 0 && col < colunas && tabuleiro[0][col] == ' ';
     }
 
-    protected int soltarPeca(int col) {
+    public int soltarPeca(int col) {
         int linha;
         for (linha = linhas - 1; linha >= 0; linha--) {
             if (tabuleiro[linha][col] == ' ') {
@@ -83,7 +83,7 @@ public class Lig4 {
         return linha;
     }
 
-    protected boolean checarVitoria(int linha, int col) {
+    public boolean checarVitoria(int linha, int col) {
         char jogador = jogadores[jogadorAtual];
     
         int contarHorizontal = 0;
@@ -141,7 +141,7 @@ public class Lig4 {
         return false;
     }
 
-    protected boolean checarEmpate() {
+    public boolean checarEmpate() {
         for (int i = 0; i < colunas; i++) {
             if (tabuleiro[0][i] == ' ') {
                 return false;
@@ -150,7 +150,7 @@ public class Lig4 {
         return true;
     }
 
-    protected void turboMode(int linha, int col) {
+    public void turboMode(int linha, int col) {
         char jogador = jogadores[jogadorAtual];
         for (int i = col + 1; i < colunas; i++) {
             if (tabuleiro[linha][i] != jogador) {
