@@ -1,16 +1,17 @@
-package tabuleiro;
-import Lig4.tabuleiro;
+package lig4.tabuleiro;
+package modos;
+import lig4.tabuleiro;
 import java.util.Arrays;
 import java.util.Scanner;
 
-class novoModo {
+class Lig4Turbo {
     protected char[][] tabuleiro;
     protected int jogadorAtual;
     protected final char[] jogadores = {'X', 'O'};
     protected final int linhas = 6;
     protected final int colunas = 7;
 
-    public novoModo() {
+    public Lig4Turbo() {
         tabuleiro = new char[linhas][colunas];
         for (char[] linha : tabuleiro) {
             Arrays.fill(linha, ' ');
@@ -34,7 +35,7 @@ class novoModo {
             } while (!movimentoValido(col));
 
             linha = soltarPeca(col);
-            turboMode(linha, col); // Ativa o Modo Turbo
+            turboMode(linha, col);
             if (checarVitoria(linha, col)) {
                 printTabuleiro();
                 System.out.printf("Jogador %c venceu! Parabéns!\n", jogadores[jogadorAtual]);
@@ -102,8 +103,6 @@ class novoModo {
 
     protected void turboMode(int linha, int col) {
         char jogador = jogadores[jogadorAtual];
-
-        // Verificação horizontal para a direita
         for (int i = col + 1; i <= Math.min(col + 3, colunas - 1); i++) {
             if (tabuleiro[linha][i] != jogador) {
                 break;
@@ -111,7 +110,6 @@ class novoModo {
             tabuleiro[linha][i] = jogador;
         }
 
-        // Verificação horizontal para a esquerda
         for (int i = col - 1; i >= Math.max(col - 3, 0); i--) {
             if (tabuleiro[linha][i] != jogador) {
                 break;
@@ -121,13 +119,3 @@ class novoModo {
     }
 }
 
-public class Lig4Turbo extends Lig4 {
-    public Lig4Turbo() {
-        super();
-    }
-
-    public static void main(String[] args) {
-        Lig4Turbo jogo = new Lig4Turbo();
-        jogo.play();
-    }
-}

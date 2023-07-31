@@ -1,7 +1,7 @@
-package Lig4;
+package lig4.tabuleiro;
 import modos;
-import Lig4.tabuleiro.Lig4TurboMode;
-import Lig4.modos.Lig4TurboMaluco;
+import lig4.tabuleiro.Lig4Turbo;
+import lig4.modos.Lig4TurboMaluco;
 import java.util.Arrays;
 import java.util.Scanner;
 
@@ -102,10 +102,10 @@ public class Lig4 {
         }
 
         contar = 0;
-        int startLinha = Linha - Math.min(Linha, col);
-        int startCol = col - Math.min(Linha, col);
-        for (int i = 0; i < Math.min(Linhas - startLinha, Colunas - startCol); i++) {
-            if (Tabuleiro[Linha + i][startCol + i] == Jogador) {
+        int comecarLinha = Linha - Math.min(Linha, col);
+        int comecarCol = col - Math.min(Linha, col);
+        for (int i = 0; i < Math.min(Linhas - comecarLinha, Colunas - comecarCol); i++) {
+            if (Tabuleiro[Linha + i][comecarCol + i] == Jogador) {
                 contar++;
                 if (contar == 4) return true;
             } else {
@@ -114,10 +114,10 @@ public class Lig4 {
         }
 
         contar = 0;
-        startLinha = Linha - Math.min(Linha, Colunas - col - 1);
-        startCol = col + Math.min(Linha, Colunas - col - 1);
-        for (int i = 0; i < Math.min(Linhas - startLinha, startCol + 1); i++) {
-            if (Tabuleiro[startLinha + i][startCol - i] == Jogador) {
+        comecarLinha = Linha - Math.min(Linha, Colunas - col - 1);
+        comecarCol = col + Math.min(Linha, Colunas - col - 1);
+        for (int i = 0; i < Math.min(Linhas - comecarLinha, comecarCol + 1); i++) {
+            if (Tabuleiro[comecarLinha + i][comecarCol - i] == Jogador) {
                 contar++;
                 if (contar == 4) return true;
             } else {
