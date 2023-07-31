@@ -1,3 +1,5 @@
+package tabuleiro;
+import Lig4.tabuleiro.Lig4TurboMode;
 import java.util.Arrays;
 import java.util.Scanner;
 
@@ -16,7 +18,7 @@ public class Lig4 {
         jogadorAtual = 0;
     }
 
-    public void play() {
+    public void jogar() {
         Scanner scanner = new Scanner(System.in);
         boolean fimDeJogo = false;
         int Linha, col;
@@ -75,11 +77,11 @@ public class Lig4 {
     }
 
     private boolean checarVitoria(int Linha, int col) {
-        char player = Jogadores[jogadorAtual];
+        char Jogador = Jogadores[jogadorAtual];
 
         int contar = 0;
         for (int i = Math.max(0, col - 3); i <= Math.min(Colunas - 1, col + 3); i++) {
-            if (Tabuleiro[Linha][i] == player) {
+            if (Tabuleiro[Linha][i] == Jogador) {
                 contar++;
                 if (contar == 4) return true;
             } else {
@@ -89,7 +91,7 @@ public class Lig4 {
 
         contar = 0;
         for (int i = Math.max(0, Linha - 3); i <= Math.min(Linhas - 1, Linha + 3); i++) {
-            if (Tabuleiro[i][col] == player) {
+            if (Tabuleiro[i][col] == Jogador) {
                 contar++;
                 if (contar == 4) return true;
             } else {
@@ -101,7 +103,7 @@ public class Lig4 {
         int startLinha = Linha - Math.min(Linha, col);
         int startCol = col - Math.min(Linha, col);
         for (int i = 0; i < Math.min(Linhas - startLinha, Colunas - startCol); i++) {
-            if (Tabuleiro[Linha + i][startCol + i] == player) {
+            if (Tabuleiro[Linha + i][startCol + i] == Jogador) {
                 contar++;
                 if (contar == 4) return true;
             } else {
@@ -113,7 +115,7 @@ public class Lig4 {
         startLinha = Linha - Math.min(Linha, Colunas - col - 1);
         startCol = col + Math.min(Linha, Colunas - col - 1);
         for (int i = 0; i < Math.min(Linhas - startLinha, startCol + 1); i++) {
-            if (Tabuleiro[startLinha + i][startCol - i] == player) {
+            if (Tabuleiro[startLinha + i][startCol - i] == Jogador) {
                 contar++;
                 if (contar == 4) return true;
             } else {
@@ -134,7 +136,7 @@ public class Lig4 {
     }
 
     public static void main(String[] args) {
-        Lig4 game = new Lig4();
-        game.play();
+        Lig4 jogo = new Lig4();
+        jogo.jogar();
     }
 }

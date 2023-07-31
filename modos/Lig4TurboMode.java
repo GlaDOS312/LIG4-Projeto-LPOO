@@ -1,14 +1,16 @@
+package Lig4.modos;
+import tabuleiro.Lig4;
 import java.util.Arrays;
 import java.util.Scanner;
 
-public class Lig4TurboMode {
-    private char[][] tabuleiro;
-    private int jogadorAtual;
-    private final char[] jogadores = {'X', 'O'};
-    private final int linhas = 6;
-    private final int colunas = 7;
+class novoModo {
+    protected char[][] tabuleiro;
+    protected int jogadorAtual;
+    protected final char[] jogadores = {'X', 'O'};
+    protected final int linhas = 6;
+    protected final int colunas = 7;
 
-    public Lig4TurboMode() {
+    public novoModo() {
         tabuleiro = new char[linhas][colunas];
         for (char[] linha : tabuleiro) {
             Arrays.fill(linha, ' ');
@@ -18,28 +20,29 @@ public class Lig4TurboMode {
 
     public void play() {
         Scanner scanner = new Scanner(System.in);
-        boolean gameOver = false;
+        boolean fimDeJogo = false;
         int linha, col;
 
-        System.out.println("Bem-vindo ao Lig4!");
+        System.out.println("Bem-vindo ao Lig 4 Turbo!");
 
-        while (!gameOver) {
+        while (!fimDeJogo) {
             printTabuleiro();
 
             do {
                 System.out.printf("Jogador %c, escolha uma coluna (1 a 7): ", jogadores[jogadorAtual]);
                 col = scanner.nextInt() - 1;
-            } while (!isValidMove(col));
+            } while (!movimentoValido(col));
 
             linha = soltarPeca(col);
+            turboMode(linha, col); // Ativa o Modo Turbo
             if (checarVitoria(linha, col)) {
                 printTabuleiro();
                 System.out.printf("Jogador %c venceu! Parabéns!\n", jogadores[jogadorAtual]);
-                gameOver = true;
+                fimDeJogo = true;
             } else if (checarEmpate()) {
                 printTabuleiro();
                 System.out.println("Empate! O tabuleiro está cheio.");
-                gameOver = true;
+                fimDeJogo = true;
             }
 
             jogadorAtual = (jogadorAtual + 1) % 2;
@@ -48,7 +51,7 @@ public class Lig4TurboMode {
         scanner.close();
     }
 
-    private void printTabuleiro() {
+    protected void printTabuleiro() {
         System.out.println(" 1 2 3 4 5 6 7");
         for (int i = 0; i < linhas; i++) {
             System.out.print("|");
@@ -59,11 +62,11 @@ public class Lig4TurboMode {
         }
     }
 
-    private boolean isValidMove(int col) {
+    protected boolean movimentoValido(int col) {
         return col >= 0 && col < colunas && tabuleiro[0][col] == ' ';
     }
 
-    private int soltarPeca(int col) {
+    protected int soltarPeca(int col) {
         int linha;
         for (linha = linhas - 1; linha >= 0; linha--) {
             if (tabuleiro[linha][col] == ' ') {
@@ -74,26 +77,21 @@ public class Lig4TurboMode {
         return linha;
     }
 
-    private boolean checarVitoria(int linha, int col) {
-        char player = jogadores[jogadorAtual];
-
-        // Check horizontal
-        int count = 0;
+    protected boolean checarVitoria(int linha, int col) {
+        char jogador = jogadores[jogadorAtual];
+        int contar = 0;
         for (int i = Math.max(0, col - 3); i <= Math.min(colunas - 1, col + 3); i++) {
-            if (tabuleiro[linha][i] == player) {
-                count++;
-                if (count == 4) return true;
+            if (tabuleiro[linha][i] == jogador) {
+                contar++;
+                if (contar == 4) return true;
             } else {
-                count = 0;
+                contar = 0;
             }
         }
-
-        // ... (Verificação vertical e diagonais permanecem iguais)
-
         return false;
     }
 
-    private boolean checarEmpate() {
+    protected boolean checarEmpate() {
         for (int i = 0; i < colunas; i++) {
             if (tabuleiro[0][i] == ' ') {
                 return false;
@@ -102,8 +100,34 @@ public class Lig4TurboMode {
         return true;
     }
 
+    protected void turboMode(int linha, int col) {
+        char jogador = jogadores[jogadorAtual];
+
+        // Verificação horizontal para a direita
+        for (int i = col + 1; i <= Math.min(col + 3, colunas - 1); i++) {
+            if (tabuleiro[linha][i] != jogador) {
+                break;
+            }
+            tabuleiro[linha][i] = jogador;
+        }
+
+        // Verificação horizontal para a esquerda
+        for (int i = col - 1; i >= Math.max(col - 3, 0); i--) {
+            if (tabuleiro[linha][i] != jogador) {
+                break;
+            }
+            tabuleiro[linha][i] = jogador;
+        }
+    }
+}
+
+public class Lig4TurboMode extends Lig4 {
+    public Lig4TurboMode() {
+        super();
+    }
+
     public static void main(String[] args) {
-        Lig4TurboMode game = new Lig4TurboMode();
-        game.play();
+        Lig4TurboMode jogo = new Lig4TurboMode();
+        jogo.play();
     }
 }
