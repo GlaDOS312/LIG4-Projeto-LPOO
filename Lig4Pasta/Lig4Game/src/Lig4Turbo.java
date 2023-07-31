@@ -1,9 +1,9 @@
 package Lig4Pasta.Lig4Game.src;
 
-public class Lig4Turbo extends Lig4 {
+public abstract class Lig4Turbo extends Lig4 {
 
     public Lig4Turbo() {
-        super(); // Chama o construtor da classe pai (Lig4) para inicializar o tabuleiro e jogadores
+        super();
     }
 
     protected void turboMode(int linha, int col) {
@@ -22,7 +22,6 @@ public class Lig4Turbo extends Lig4 {
             tabuleiro[linha][i] = jogador;
         }
 
-        // Lógica específica do modo Turbo: mudar as peças vizinhas verticalmente
         for (int i = linha + 1; i < linhas; i++) {
             if (tabuleiro[i][col] != jogador) {
                 break;
@@ -36,12 +35,5 @@ public class Lig4Turbo extends Lig4 {
             }
             tabuleiro[i][col] = jogador;
         }
-    }
-
-    // Métodos específicos do modo Turbo (se houver)
-
-    @Override
-    public void jogar() {
-        super.jogar(); // Chama o método jogar da classe pai
     }
 }

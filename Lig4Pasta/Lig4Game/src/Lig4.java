@@ -1,8 +1,8 @@
 package Lig4Pasta.Lig4Game.src;
 
 import java.util.Arrays;
-import java.util.Scanner;
 import java.util.Random;
+import java.util.Scanner;
 
 public class Lig4 {
     protected char[][] tabuleiro;
@@ -41,12 +41,9 @@ public class Lig4 {
 
             linha = soltarPeca(col);
             if (checarVitoria(linha, col)) {
-                if (checarVitoria(linha, col)) {
-                    printTabuleiro();
-                    System.out.printf("Jogador %c venceu! Parabéns!\n", jogadores[jogadorAtual]);
-                    fimDeJogo = true;
-                    break;
-                }                
+                printTabuleiro();
+                System.out.printf("Jogador %c venceu! Parabéns!\n", jogadores[jogadorAtual]);
+                fimDeJogo = true;
             } else if (checarEmpate()) {
                 printTabuleiro();
                 System.out.println("Empate! O tabuleiro está cheio.");
@@ -79,6 +76,7 @@ public class Lig4 {
         for (linha = linhas - 1; linha >= 0; linha--) {
             if (tabuleiro[linha][col] == ' ') {
                 tabuleiro[linha][col] = jogadores[jogadorAtual];
+                turboMode(linha, col);
                 break;
             }
         }
@@ -86,53 +84,57 @@ public class Lig4 {
     }
 
     protected boolean checarVitoria(int linha, int col) {
-        char jogador = tabuleiro[linha][col];
+        char jogador = jogadores[jogadorAtual];
     
-        // Verificar vitória na horizontal
-        int contar = 0;
-        for (int i = Math.max(0, col - 3); i <= Math.min(colunas - 1, col + 3); i++) {
+        int contarHorizontal = 0;
+        for (int i = Math.max(0, col - 3); i <= Math.min(col + 3, colunas - 1); i++) {
             if (tabuleiro[linha][i] == jogador) {
-                contar++;
-                if (contar == 4) return true;
+                contarHorizontal++;
+                if (contarHorizontal == 4) {
+                    return true;
+                }
             } else {
-                contar = 0;
+                contarHorizontal = 0;
             }
         }
     
-        // Verificar vitória na vertical
-        contar = 0;
-        for (int i = Math.max(0, linha - 3); i <= Math.min(linhas - 1, linha + 3); i++) {
+        int contarVertical = 0;
+        for (int i = Math.max(0, linha - 3); i <= Math.min(linha + 3, linhas - 1); i++) {
             if (tabuleiro[i][col] == jogador) {
-                contar++;
-                if (contar == 4) return true;
+                contarVertical++;
+                if (contarVertical == 4) {
+                    return true;
+                }
             } else {
-                contar = 0;
+                contarVertical = 0;
             }
         }
     
-        // Verificar vitória na diagonal inferior direita
-        contar = 0;
-        int startLinha = linha - Math.min(linha, col);
-        int startCol = col - Math.min(linha, col);
-        for (int i = 0; i < Math.min(linhas - startLinha, colunas - startCol); i++) {
-            if (tabuleiro[startLinha + i][startCol + i] == jogador) {
-                contar++;
-                if (contar == 4) return true;
+        int contarDiagonal1 = 0;
+        int startColDiagonal1 = col - Math.min(col, linha);
+        int startRowDiagonal1 = linha - Math.min(col, linha);
+        for (int i = 0; i < Math.min(linhas - startRowDiagonal1, colunas - startColDiagonal1); i++) {
+            if (tabuleiro[startRowDiagonal1 + i][startColDiagonal1 + i] == jogador) {
+                contarDiagonal1++;
+                if (contarDiagonal1 == 4) {
+                    return true;
+                }
             } else {
-                contar = 0;
+                contarDiagonal1 = 0;
             }
         }
     
-        // Verificar vitória na diagonal superior direita
-        contar = 0;
-        startLinha = linha - Math.min(linha, colunas - col - 1);
-        startCol = col + Math.min(linha, colunas - col - 1);
-        for (int i = 0; i < Math.min(linhas - startLinha, startCol + 1); i++) {
-            if (tabuleiro[startLinha + i][startCol - i] == jogador) {
-                contar++;
-                if (contar == 4) return true;
+        int contarDiagonal2 = 0;
+        int startColDiagonal2 = col - Math.min(col, linhas - linha - 1);
+        int startRowDiagonal2 = linha + Math.min(col, linhas - linha - 1);
+        for (int i = 0; i < Math.min(startRowDiagonal2 + 1, colunas - startColDiagonal2); i++) {
+            if (tabuleiro[startRowDiagonal2 - i][startColDiagonal2 + i] == jogador) {
+                contarDiagonal2++;
+                if (contarDiagonal2 == 4) {
+                    return true;
+                }
             } else {
-                contar = 0;
+                contarDiagonal2 = 0;
             }
         }
     
@@ -148,6 +150,23 @@ public class Lig4 {
         return true;
     }
 
+    protected void turboMode(int linha, int col) {
+        char jogador = jogadores[jogadorAtual];
+        for (int i = col + 1; i < colunas; i++) {
+            if (tabuleiro[linha][i] != jogador) {
+                break;
+            }
+            tabuleiro[linha][i] = jogador;
+        }
+
+        for (int i = col - 1; i >= 0; i--) {
+            if (tabuleiro[linha][i] != jogador) {
+                break;
+            }
+            tabuleiro[linha][i] = jogador;
+        }
+    }
+
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
         System.out.println("Bem-vindo ao Lig4!");
@@ -161,6 +180,7 @@ public class Lig4 {
             System.out.println("1 - Jogar contra outro jogador");
             System.out.println("2 - Jogar contra a máquina");
             System.out.println("3 - Jogar no modo Turbo");
+            System.out.println("4 - Jogar no modo Turbo Maluco");
             System.out.println("0 - Sair");
             System.out.print("Opção: ");
             int opcao = scanner.nextInt();
@@ -175,9 +195,15 @@ public class Lig4 {
                     jogo.jogar();
                     break;
                 case 3:
-                    System.out.println("Modo: Lig4Turbo");
-                    Lig4Turbo jogoTurbo = new Lig4Turbo();
-                    jogoTurbo.jogar();
+                    System.out.println("Modo: Turbo");
+                    jogo.jogar();
+                    break;
+                case 4:
+                    System.out.println("Modo: Turbo Maluco");
+                    System.out.print("Digite o nível de Maluquice (0 a 5): ");
+                    int nivelMaluquice = scanner.nextInt();
+                    Lig4TurboMaluco jogoTurboMaluco = new Lig4TurboMaluco(nivelMaluquice);
+                    jogoTurboMaluco.jogar();
                     break;
                 case 0:
                     System.out.println("Saindo do jogo. Até a próxima!");

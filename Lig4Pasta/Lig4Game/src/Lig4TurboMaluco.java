@@ -17,7 +17,6 @@ public class Lig4TurboMaluco extends Lig4 {
         char jogador = jogadores[jogadorAtual];
         Random random = new Random();
 
-        // Probabilidade de mudar peças vizinhas verticalmente
         if (random.nextInt(100) < nivelMaluquice) {
             int cima = linha - 1;
             int baixo = linha + 1;
@@ -31,8 +30,7 @@ public class Lig4TurboMaluco extends Lig4 {
             }
         }
 
-        // Probabilidade de mudar peças vizinhas diagonalmente
-        if (random.nextInt(100) < nivelMaluquice) {
+        if (random.nextInt(5) < nivelMaluquice) {
             int esqCima = linha - 1;
             int dirCima = linha - 1;
             int esqBaixo = linha + 1;
