@@ -3,6 +3,7 @@ package lig4.tabuleiro;
 import java.util.Arrays;
 import java.util.Random;
 import java.util.Scanner;
+import lig4.tabuleiro.Lig4TurboMode;
 
 public class Lig4TurboMaluco {
     protected char[][] tabuleiro;
@@ -141,13 +142,4 @@ public class Lig4TurboMaluco {
         this.nivelMaluquice = nivelMaluquice;
     }
 
-    public class modoMaluco extends Lig4 {
-        public modoMaluco() {
-            super();
-        }
-    
-        public static void main(String[] args) {
-            modoMaluco jogo = new modoMaluco();
-            jogo.play();
-        }
 }

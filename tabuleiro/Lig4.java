@@ -1,44 +1,62 @@
-package lig4.tabuleiro;
-import modos;
-import lig4.tabuleiro.Lig4Turbo;
-import lig4.modos.Lig4TurboMaluco;
+package tabuleiro;
+
 import java.util.Arrays;
+import java.util.Random;
 import java.util.Scanner;
 
 public class Lig4 {
-    private char[][] Tabuleiro;
+    private char[][] tabuleiro;
     private int jogadorAtual;
-    private final char[] Jogadores = {'X', 'O'};
-    private final int Linhas = 6;
-    private final int Colunas = 7;
+    private final char[] jogadores = {'X', 'O'};
+    private final int linhas = 6;
+    private final int colunas = 7;
 
     public Lig4() {
-        Tabuleiro = new char[Linhas][Colunas];
-        for (char[] Linha : Tabuleiro) {
-            Arrays.fill(Linha, ' ');
+        tabuleiro = new char[linhas][colunas];
+        for (char[] linha : tabuleiro) {
+            Arrays.fill(linha, ' ');
         }
         jogadorAtual = 0;
     }
 
     public void jogar() {
         Scanner scanner = new Scanner(System.in);
-        boolean fimDeJogo = false;
-        int Linha, col;
-
+        int modo;
         System.out.println("Bem-vindo ao Lig4!");
+        do {
+            System.out.println("Escolha o modo de jogo:");
+            System.out.println("1 - Jogador vs. Jogador");
+            System.out.println("2 - Jogador vs. Computador");
+            modo = scanner.nextInt();
+        } while (modo < 1 || modo > 2);
+
+        if (modo == 1) {
+            System.out.println("Modo selecionado: Jogador vs. Jogador");
+            jogarModoJogador(scanner);
+        } else {
+            System.out.println("Modo selecionado: Jogador vs. Computador");
+            jogarModoComputador();
+        }
+
+        scanner.close();
+    }
+
+    private void jogarModoJogador(Scanner scanner) {
+        boolean fimDeJogo = false;
+        int linha, col;
 
         while (!fimDeJogo) {
             printTabuleiro();
 
             do {
-                System.out.printf("Jogador %c, escolha uma coluna (1 a 7): ", Jogadores[jogadorAtual]);
+                System.out.printf("Jogador %c, escolha uma coluna (1 a 7): ", jogadores[jogadorAtual]);
                 col = scanner.nextInt() - 1;
             } while (!movimentoValido(col));
 
-            Linha = soltarPeca(col);
-            if (checarVitoria(Linha, col)) {
+            linha = soltarPeca(col);
+            if (checarVitoria(linha, col)) {
                 printTabuleiro();
-                System.out.printf("Jogador %c venceu! Parabéns!\n", Jogadores[jogadorAtual]);
+                System.out.printf("Jogador %c venceu! Parabéns!\n", jogadores[jogadorAtual]);
                 fimDeJogo = true;
             } else if (checarEmpate()) {
                 printTabuleiro();
@@ -48,42 +66,92 @@ public class Lig4 {
 
             jogadorAtual = (jogadorAtual + 1) % 2;
         }
+    }
 
-        scanner.close();
+    private void jogarModoComputador() {
+        Random random = new Random();
+        boolean fimDeJogo = false;
+        int linha, col;
+
+        while (!fimDeJogo) {
+            if (jogadorAtual == 0) {
+                printTabuleiro();
+
+                int colJogador;
+                do {
+                    Scanner scanner = new Scanner(System.in);
+                    System.out.printf("Jogador %c, escolha uma coluna (1 a 7): ", jogadores[jogadorAtual]);
+                    colJogador = scanner.nextInt() - 1;
+                } while (!movimentoValido(colJogador));
+
+                linha = soltarPeca(colJogador);
+                if (checarVitoria(linha, colJogador)) {
+                    printTabuleiro();
+                    System.out.printf("Jogador %c venceu! Parabéns!\n", jogadores[jogadorAtual]);
+                    fimDeJogo = true;
+                } else if (checarEmpate()) {
+                    printTabuleiro();
+                    System.out.println("Empate! O tabuleiro está cheio.");
+                    fimDeJogo = true;
+                }
+            } else {
+                // Jogada do Computador
+                col = random.nextInt(colunas);
+                while (!movimentoValido(col)) {
+                    col = random.nextInt(colunas);
+                }
+                linha = soltarPeca(col);
+                if (checarVitoria(linha, col)) {
+                    printTabuleiro();
+                    System.out.println("O computador venceu!");
+                    fimDeJogo = true;
+                } else if (checarEmpate()) {
+                    printTabuleiro();
+                    System.out.println("Empate! O tabuleiro está cheio.");
+                    fimDeJogo = true;
+                }
+            }
+
+            jogadorAtual = (jogadorAtual + 1) % 2;
+        }
     }
 
     private void printTabuleiro() {
         System.out.println(" 1 2 3 4 5 6 7");
-        for (int i = 0; i < Linhas; i++) {
+        for (int i = 0; i < linhas; i++) {
             System.out.print("|");
-            for (int j = 0; j < Colunas; j++) {
-                System.out.print(Tabuleiro[i][j] + "|");
+            for (int j = 0; j < colunas; j++) {
+                System.out.print(tabuleiro[i][j] + "|");
             }
             System.out.println();
         }
     }
 
     private boolean movimentoValido(int col) {
-        return col >= 0 && col < Colunas && Tabuleiro[0][col] == ' ';
+        if (col < 0 || col >= colunas) {
+            return false;
+        }
+        return tabuleiro[0][col] == ' ';
     }
 
     private int soltarPeca(int col) {
-        int Linha;
-        for (Linha = Linhas - 1; Linha >= 0; Linha--) {
-            if (Tabuleiro[Linha][col] == ' ') {
-                Tabuleiro[Linha][col] = Jogadores[jogadorAtual];
+        int linha;
+        for (linha = linhas - 1; linha >= 0; linha--) {
+            if (tabuleiro[linha][col] == ' ') {
+                tabuleiro[linha][col] = jogadores[jogadorAtual];
                 break;
             }
         }
-        return Linha;
+        return linha;
     }
 
-    private boolean checarVitoria(int Linha, int col) {
-        char Jogador = Jogadores[jogadorAtual];
+    private boolean checarVitoria(int linha, int col) {
+        char jogador = jogadores[jogadorAtual];
 
+        // Verificação na horizontal
         int contar = 0;
-        for (int i = Math.max(0, col - 3); i <= Math.min(Colunas - 1, col + 3); i++) {
-            if (Tabuleiro[Linha][i] == Jogador) {
+        for (int i = Math.max(0, col - 3); i <= Math.min(colunas - 1, col + 3); i++) {
+            if (tabuleiro[linha][i] == jogador) {
                 contar++;
                 if (contar == 4) return true;
             } else {
@@ -91,9 +159,10 @@ public class Lig4 {
             }
         }
 
+        // Verificação na vertical
         contar = 0;
-        for (int i = Math.max(0, Linha - 3); i <= Math.min(Linhas - 1, Linha + 3); i++) {
-            if (Tabuleiro[i][col] == Jogador) {
+        for (int i = Math.max(0, linha - 3); i <= Math.min(linhas - 1, linha + 3); i++) {
+            if (tabuleiro[i][col] == jogador) {
                 contar++;
                 if (contar == 4) return true;
             } else {
@@ -101,11 +170,13 @@ public class Lig4 {
             }
         }
 
+        // Verificação na diagonal principal (de cima para baixo e da esquerda para a direita)
         contar = 0;
-        int comecarLinha = Linha - Math.min(Linha, col);
-        int comecarCol = col - Math.min(Linha, col);
-        for (int i = 0; i < Math.min(Linhas - comecarLinha, Colunas - comecarCol); i++) {
-            if (Tabuleiro[Linha + i][comecarCol + i] == Jogador) {
+        int offset = Math.min(col, linha);
+        int startCol = col - offset;
+        int startRow = linha - offset;
+        for (int i = startRow, j = startCol; i < linhas && j < colunas; i++, j++) {
+            if (tabuleiro[i][j] == jogador) {
                 contar++;
                 if (contar == 4) return true;
             } else {
@@ -113,11 +184,13 @@ public class Lig4 {
             }
         }
 
+        // Verificação na diagonal secundária (de cima para baixo e da direita para a esquerda)
         contar = 0;
-        comecarLinha = Linha - Math.min(Linha, Colunas - col - 1);
-        comecarCol = col + Math.min(Linha, Colunas - col - 1);
-        for (int i = 0; i < Math.min(Linhas - comecarLinha, comecarCol + 1); i++) {
-            if (Tabuleiro[comecarLinha + i][comecarCol - i] == Jogador) {
+        offset = Math.min(colunas - col - 1, linha);
+        startCol = col + offset;
+        startRow = linha - offset;
+        for (int i = startRow, j = startCol; i < linhas && j >= 0; i++, j--) {
+            if (tabuleiro[i][j] == jogador) {
                 contar++;
                 if (contar == 4) return true;
             } else {
@@ -129,8 +202,8 @@ public class Lig4 {
     }
 
     private boolean checarEmpate() {
-        for (int i = 0; i < Colunas; i++) {
-            if (Tabuleiro[0][i] == ' ') {
+        for (int i = 0; i < colunas; i++) {
+            if (tabuleiro[0][i] == ' ') {
                 return false;
             }
         }

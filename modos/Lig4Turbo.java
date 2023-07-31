@@ -1,7 +1,9 @@
-package lig4.tabuleiro;
 package modos;
-import lig4.tabuleiro;
+package lig4.tabuleiro;
+
+import Lig4.tabuleiro;
 import java.util.Arrays;
+import java.util.Random;
 import java.util.Scanner;
 
 class Lig4Turbo {
