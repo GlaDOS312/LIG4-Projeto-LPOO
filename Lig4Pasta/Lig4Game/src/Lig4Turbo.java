@@ -1,6 +1,5 @@
 package Lig4Pasta.Lig4Game.src;
 
-
 public abstract class Lig4Turbo extends Lig4 {
 
     public Lig4Turbo() {

@@ -177,26 +177,28 @@ public class Lig4 implements Lig4Interface {
 
         while (continuar) {
             System.out.println("Escolha o modo de jogo:");
-            System.out.println("1 - Jogar contra outro jogador");
-            System.out.println("2 - Jogar contra a máquina");
+            System.out.println("1 - Jogar X jogador");
+            System.out.println("2 - Jogar X máquina");
             System.out.println("3 - Jogar no modo Turbo");
             System.out.println("4 - Jogar no modo Turbo Maluco");
             System.out.println("0 - Sair");
             System.out.print("Opção: ");
+
             int opcao = scanner.nextInt();
 
             switch (opcao) {
                 case 1:
-                    System.out.println("Modo: Jogador vs. Jogador");
+                    System.out.println("Modo: Jogador X Jogador");
                     jogo.jogar();
                     break;
                 case 2:
-                    System.out.println("Modo: Jogador vs. Máquina");
+                    System.out.println("Modo: Jogador X Máquina");
                     jogo.jogar();
                     break;
                 case 3:
                     System.out.println("Modo: Turbo");
-                    jogo.jogar();
+                    Lig4Turbo jogoTurbo = new Lig4Turbo(Lig4Turbo);
+                    jogo.Lig4Turbo();
                     break;
                 case 4:
                     System.out.println("Modo: Turbo Maluco");
@@ -212,6 +214,14 @@ public class Lig4 implements Lig4Interface {
                 default:
                     System.out.println("Opção inválida. Tente novamente.");
                     break;
+            }
+
+            if (scanner.hasNextInt()) {
+                opcao = scanner.nextInt();
+            } else {
+                System.out.println("Entrada inválida. Insira um valor inteiro válido.");
+                scanner.nextLine();
+                continue;
             }
         }
 
