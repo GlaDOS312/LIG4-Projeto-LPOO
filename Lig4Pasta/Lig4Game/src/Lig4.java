@@ -20,40 +20,59 @@ public class Lig4 implements Lig4Interface {
     }
 
     public void jogar() {
-        Scanner scanner = new Scanner(System.in);
-        boolean fimDeJogo = false;
-        int linha, col;
+        try (Scanner scanner = new Scanner(System.in)) {
+            boolean fimDeJogo = false;
+            int linha, col;
 
-        System.out.println("Bem-vindo ao Lig4!");
+            System.out.println("Bem-vindo ao Lig4!");
 
-        while (!fimDeJogo) {
-            printTabuleiro();
+            while (!fimDeJogo) {
+                printTabuleiro();
 
-            do {
-                if (jogadorAtual == 0) {
-                    System.out.printf("Jogador %c, escolha uma coluna (1 a 7): ", jogadores[jogadorAtual]);
-                    col = scanner.nextInt() - 1;
-                } else {
-                    Random random = new Random();
-                    col = random.nextInt(colunas);
+                do {
+                    if (jogadorAtual == 0) {
+                        System.out.printf("Jogador %c, escolha uma coluna (1 a 7): ", jogadores[jogadorAtual]);
+                        col = scanner.nextInt() - 1;
+                    } else {
+                        Random random = new Random();
+                        col = random.nextInt(colunas);
+                    }
+                } while (!movimentoValido(col));
+
+                linha = soltarPeca(col);
+                if (checarVitoria(linha, col)) {
+                    printTabuleiro();
+                    System.out.printf("Jogador %c venceu! Parabéns!\n", jogadores[jogadorAtual]);
+                    fimDeJogo = true;
+                    System.out.print("Deseja voltar ao menu principal? (S/N): ");
+                    scanner.nextLine();
+                    String resposta = scanner.next().toLowerCase();
+                    if (resposta.equals("s")) {
+                        return;
+                    } else if (resposta.equals("n")) {
+                        System.out.println("Saindo do jogo. Até a próxima!");
+                        System.exit(0);
+}
+
+
+                    if (resposta.equals("s")) {
+                        return;
+                    } else if (resposta.equals("n")) {
+                        System.out.println("Saindo do jogo. Até a próxima!");
+                        System.exit(0);
+                    }
+                } else if (checarEmpate()) {
+                    printTabuleiro();
+                    System.out.println("Empate! O tabuleiro está cheio.");
+                    fimDeJogo = true;
                 }
-            } while (!movimentoValido(col));
 
-            linha = soltarPeca(col);
-            if (checarVitoria(linha, col)) {
-                printTabuleiro();
-                System.out.printf("Jogador %c venceu! Parabéns!\n", jogadores[jogadorAtual]);
-                fimDeJogo = true;
-            } else if (checarEmpate()) {
-                printTabuleiro();
-                System.out.println("Empate! O tabuleiro está cheio.");
-                fimDeJogo = true;
+                jogadorAtual = (jogadorAtual + 1) % 2;
+
             }
-
-            jogadorAtual = (jogadorAtual + 1) % 2;
+                scanner.close();
         }
 
-        scanner.close();
     }
 
     public void printTabuleiro() {
@@ -97,7 +116,7 @@ public class Lig4 implements Lig4Interface {
                 contarHorizontal = 0;
             }
         }
-    
+
         int contarVertical = 0;
         for (int i = Math.max(0, linha - 3); i <= Math.min(linha + 3, linhas - 1); i++) {
             if (tabuleiro[i][col] == jogador) {
@@ -185,6 +204,7 @@ public class Lig4 implements Lig4Interface {
             System.out.print("Opção: ");
 
             int opcao = scanner.nextInt();
+            scanner.nextLine();
 
             switch (opcao) {
                 case 1:
@@ -197,8 +217,7 @@ public class Lig4 implements Lig4Interface {
                     break;
                 case 3:
                     System.out.println("Modo: Turbo");
-                    Lig4Turbo jogoTurbo = new Lig4Turbo(Lig4Turbo);
-                    jogo.Lig4Turbo();
+                    jogo.jogar();
                     break;
                 case 4:
                     System.out.println("Modo: Turbo Maluco");
